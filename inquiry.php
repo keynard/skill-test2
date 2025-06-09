@@ -21,17 +21,17 @@ if ($type == 'specialization' && isset($_GET['special'])) {
 <html>
 <head>
     <title>Consultations Inquiry</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+   
 </head>
 <body>
-<div class="container mt-5">
+<div class="container">
     <h2>Consultations Inquiry</h2>
     <a href="index.php" class="btn btn-secondary mb-3">Back to Menu</a>
 
     <form method="get" class="mb-3">
         <input type="hidden" name="type" value="specialization">
         <div class="input-group">
-            <input type="text" name="special" class="form-control" placeholder="Search Doctors by Specialization" required>
+            <input type="text" name="special" placeholder="Search Doctors by Specialization" required>
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
     </form>
@@ -39,14 +39,14 @@ if ($type == 'specialization' && isset($_GET['special'])) {
     <form method="get" class="mb-3">
         <input type="hidden" name="type" value="consult_by_doc">
         <div class="input-group">
-            <input type="number" name="docID" class="form-control" placeholder="Consultations by Doctor ID" required>
+            <input type="number" name="docID" placeholder="Consultations by Doctor ID" required>
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
     </form>
 
     <?php if ($type == 'specialization'): ?>
         <h4>Doctors with Specialization: <?= htmlspecialchars($_GET['special']) ?></h4>
-        <table class="table table-bordered">
+        <table>
             <thead>
                 <tr>
                     <th>License/ID</th>
@@ -70,7 +70,7 @@ if ($type == 'specialization' && isset($_GET['special'])) {
         </table>
     <?php elseif ($type == 'consult_by_doc'): ?>
         <h4>Consultations for Doctor ID: <?= htmlspecialchars($_GET['docID']) ?></h4>
-        <table class="table table-bordered">
+        <table>
             <thead>
                 <tr>
                     <th>Consultation ID</th>

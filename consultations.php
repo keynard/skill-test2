@@ -1,3 +1,4 @@
+
 <?php
 include 'db.php';
 
@@ -62,19 +63,27 @@ $result = $conn->query($sql);
 <html>
 <head>
     <title>Consultations Management</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+   <style>
+    .thread { 
+            border: 2px solid #007bff; 
+            border-radius: 8px; 
+            padding: 12px; 
+            background: #f1f7ff;
+            margin-top: 20px;
+        }
+   </style>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container">
     <h2>Consultations Management</h2>
     <a href="index.php" class="btn btn-secondary mb-3">Back to Menu</a>
 
     <!-- Add Consultation Form -->
     <form method="post" class="mb-4 border p-3 bg-light rounded">
         <h5>Add Consultation</h5>
-        <div class="row mb-2">
-            <div class="col">
-                <select name="patID" class="form-control" required>
+        <div class="form-row mb-2">
+            <div>
+                <select name="patID" required>
                     <option value="">Select Patient</option>
                     <?php
                     $patients2 = $conn->query("SELECT patID, patFName, patLName FROM patient");
@@ -83,8 +92,8 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 </select>
             </div>
-            <div class="col">
-                <select name="docID" class="form-control" required>
+            <div>
+                <select name="docID" required>
                     <option value="">Select Doctor</option>
                     <?php
                     $doctors2 = $conn->query("SELECT docID, docFName, docLName FROM doctor");
@@ -93,15 +102,15 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 </select>
             </div>
-            <div class="col">
-                <input type="datetime-local" name="consultDate" class="form-control" required>
+            <div>
+                <input type="datetime-local" name="consultDate" required>
             </div>
         </div>
         <div class="mb-2">
-            <input type="text" name="diagnosis" class="form-control" placeholder="Diagnosis" required>
+            <input type="text" name="diagnosis" placeholder="Diagnosis" required>
         </div>
         <div class="mb-2">
-            <input type="text" name="prescription" class="form-control" placeholder="Prescription" required>
+            <input type="text" name="prescription" placeholder="Prescription" required>
         </div>
         <button type="submit" name="add" class="btn btn-primary">Add Consultation</button>
     </form>
@@ -109,13 +118,13 @@ $result = $conn->query($sql);
     <!-- Search Form -->
     <form method="get" class="mb-3">
         <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search Diagnosis or Prescription" value="<?= htmlspecialchars($search) ?>">
-            <button class="btn btn-outline-primary" type="submit">Search</button>
-            <a href="consultations.php" class="btn btn-outline-secondary">Reset</a>
+            <input type="text" name="search" placeholder="Search Diagnosis or Prescription" value="<?= htmlspecialchars($search) ?>">
+            <button class="btn btn-primary" type="submit">Search</button>
+            <a href="consultations.php" class="btn btn-secondary">Reset</a>
         </div>
     </form>
 
-    <table class="table table-bordered">
+    <table>
         <thead>
             <tr>
                 <th>Consultation ID</th>
@@ -133,9 +142,9 @@ $result = $conn->query($sql);
                 <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['consultID']): ?>
                     <form method="post">
                         <td><?= $row['consultID'] ?><input type="hidden" name="consultID" value="<?= $row['consultID'] ?>"></td>
-                        <td><input type="datetime-local" name="consultDate" value="<?= date('Y-m-d\TH:i', strtotime($row['consultDate'])) ?>" class="form-control" required></td>
+                        <td><input type="datetime-local" name="consultDate" value="<?= date('Y-m-d\TH:i', strtotime($row['consultDate'])) ?>" required></td>
                         <td>
-                            <select name="docID" class="form-control" required>
+                            <select name="docID" required>
                                 <?php
                                 $doctors3 = $conn->query("SELECT docID, docFName, docLName FROM doctor");
                                 while($d = $doctors3->fetch_assoc()):
@@ -146,7 +155,7 @@ $result = $conn->query($sql);
                             </select>
                         </td>
                         <td>
-                            <select name="patID" class="form-control" required>
+                            <select name="patID" required>
                                 <?php
                                 $patients3 = $conn->query("SELECT patID, patFName, patLName FROM patient");
                                 while($p = $patients3->fetch_assoc()):
@@ -156,8 +165,8 @@ $result = $conn->query($sql);
                                 <?php endwhile; ?>
                             </select>
                         </td>
-                        <td><input type="text" name="diagnosis" value="<?= htmlspecialchars($row['diagnosis']) ?>" class="form-control" required></td>
-                        <td><input type="text" name="prescription" value="<?= htmlspecialchars($row['prescription']) ?>" class="form-control" required></td>
+                        <td><input type="text" name="diagnosis" value="<?= htmlspecialchars($row['diagnosis']) ?>" required></td>
+                        <td><input type="text" name="prescription" value="<?= htmlspecialchars($row['prescription']) ?>" required></td>
                         <td>
                             <button type="submit" name="update" class="btn btn-success btn-sm">Save</button>
                             <a href="consultations.php" class="btn btn-secondary btn-sm">Cancel</a>

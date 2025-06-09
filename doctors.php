@@ -49,7 +49,7 @@ $result = $conn->query($sql);
 <html>
 <head>
     <title>Doctors Management</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+   
 </head>
 <body>
 <div class="container mt-5">
@@ -61,16 +61,16 @@ $result = $conn->query($sql);
         <h5>Add Doctor</h5>
         <div class="row mb-2">
             <div class="col">
-                <input type="text" name="docFName" class="form-control" placeholder="First Name" required>
+                <input type="text" name="docFName" placeholder="First Name" required>
             </div>
             <div class="col">
-                <input type="text" name="docLName" class="form-control" placeholder="Last Name" required>
+                <input type="text" name="docLName" placeholder="Last Name" required>
             </div>
             <div class="col">
-                <input type="text" name="docAddress" class="form-control" placeholder="Address" required>
+                <input type="text" name="docAddress" placeholder="Address" required>
             </div>
             <div class="col">
-                <input type="text" name="docSpecial" class="form-control" placeholder="Specialization" required>
+                <input type="text" name="docSpecial" placeholder="Specialization" required>
             </div>
         </div>
         <button type="submit" name="add" class="btn btn-primary">Add Doctor</button>
@@ -79,13 +79,13 @@ $result = $conn->query($sql);
     <!-- Search Form -->
     <form method="get" class="mb-3">
         <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search by Name or Specialization" value="<?= htmlspecialchars($search) ?>">
+            <input type="text" name="search" placeholder="Search by Name or Specialization" value="<?= htmlspecialchars($search) ?>">
             <button class="btn btn-outline-primary" type="submit">Search</button>
             <a href="doctors.php" class="btn btn-outline-secondary">Reset</a>
         </div>
     </form>
 
-    <table class="table table-bordered">
+    <table>
         <thead>
             <tr>
                 <th>License/ID</th>
@@ -102,10 +102,10 @@ $result = $conn->query($sql);
                 <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['docID']): ?>
                     <form method="post">
                         <td><?= $row['docID'] ?><input type="hidden" name="docID" value="<?= $row['docID'] ?>"></td>
-                        <td><input type="text" name="docFName" value="<?= htmlspecialchars($row['docFName']) ?>" class="form-control" required></td>
-                        <td><input type="text" name="docLName" value="<?= htmlspecialchars($row['docLName']) ?>" class="form-control" required></td>
-                        <td><input type="text" name="docAddress" value="<?= htmlspecialchars($row['docAddress']) ?>" class="form-control" required></td>
-                        <td><input type="text" name="docSpecial" value="<?= htmlspecialchars($row['docSpecial']) ?>" class="form-control" required></td>
+                        <td><input type="text" name="docFName" value="<?= htmlspecialchars($row['docFName']) ?>" required></td>
+                        <td><input type="text" name="docLName" value="<?= htmlspecialchars($row['docLName']) ?>" required></td>
+                        <td><input type="text" name="docAddress" value="<?= htmlspecialchars($row['docAddress']) ?>" required></td>
+                        <td><input type="text" name="docSpecial" value="<?= htmlspecialchars($row['docSpecial']) ?>" required></td>
                         <td>
                             <button type="submit" name="update" class="btn btn-success btn-sm">Save</button>
                             <a href="doctors.php" class="btn btn-secondary btn-sm">Cancel</a>

@@ -49,10 +49,10 @@ $result = $conn->query($sql);
 <html>
 <head>
     <title>Patients Management</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+   
 </head>
 <body>
-<div class="container mt-5">
+<div class="container">
     <h2>Patients Management</h2>
     <a href="index.php" class="btn btn-secondary mb-3">Back to Menu</a>
 
@@ -61,16 +61,16 @@ $result = $conn->query($sql);
         <h5>Add Patient</h5>
         <div class="row mb-2">
             <div class="col">
-                <input type="text" name="patFName" class="form-control" placeholder="First Name" required>
+                <input type="text" name="patFName" placeholder="First Name" required>
             </div>
             <div class="col">
-                <input type="text" name="patLName" class="form-control" placeholder="Last Name" required>
+                <input type="text" name="patLName" placeholder="Last Name" required>
             </div>
             <div class="col">
-                <input type="date" name="patBDate" class="form-control" placeholder="Birth Date" required>
+                <input type="date" name="patBDate" placeholder="Birth Date" required>
             </div>
             <div class="col">
-                <input type="text" name="patTelNo" class="form-control" placeholder="Telephone Number" required>
+                <input type="text" name="patTelNo" placeholder="Telephone Number" required>
             </div>
         </div>
         <button type="submit" name="add" class="btn btn-primary">Add Patient</button>
@@ -79,13 +79,13 @@ $result = $conn->query($sql);
     <!-- Search Form -->
     <form method="get" class="mb-3">
         <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search by Name or Telephone" value="<?= htmlspecialchars($search) ?>">
+            <input type="text" name="search" placeholder="Search by Name or Telephone" value="<?= htmlspecialchars($search) ?>">
             <button class="btn btn-outline-primary" type="submit">Search</button>
             <a href="patients.php" class="btn btn-outline-secondary">Reset</a>
         </div>
     </form>
 
-    <table class="table table-bordered">
+    <table>
         <thead>
             <tr>
                 <th>ID Number</th>
@@ -102,10 +102,10 @@ $result = $conn->query($sql);
                 <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['patID']): ?>
                     <form method="post">
                         <td><?= $row['patID'] ?><input type="hidden" name="patID" value="<?= $row['patID'] ?>"></td>
-                        <td><input type="text" name="patFName" value="<?= htmlspecialchars($row['patFName']) ?>" class="form-control" required></td>
-                        <td><input type="text" name="patLName" value="<?= htmlspecialchars($row['patLName']) ?>" class="form-control" required></td>
-                        <td><input type="date" name="patBDate" value="<?= $row['patBDate'] ?>" class="form-control" required></td>
-                        <td><input type="text" name="patTelNo" value="<?= htmlspecialchars($row['patTelNo']) ?>" class="form-control" required></td>
+                        <td><input type="text" name="patFName" value="<?= htmlspecialchars($row['patFName']) ?>" required></td>
+                        <td><input type="text" name="patLName" value="<?= htmlspecialchars($row['patLName']) ?>" required></td>
+                        <td><input type="date" name="patBDate" value="<?= $row['patBDate'] ?>" required></td>
+                        <td><input type="text" name="patTelNo" value="<?= htmlspecialchars($row['patTelNo']) ?>" required></td>
                         <td>
                             <button type="submit" name="update" class="btn btn-success btn-sm">Save</button>
                             <a href="patients.php" class="btn btn-secondary btn-sm">Cancel</a>
