@@ -4,10 +4,12 @@ include 'db.php';
 
 // Handle Add Patient
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
+    // Get and sanitize form inputs for new patient
     $patFName = $conn->real_escape_string($_POST['patFName']);
     $patLName = $conn->real_escape_string($_POST['patLName']);
     $patBDate = $conn->real_escape_string($_POST['patBDate']);
     $patTelNo = $conn->real_escape_string($_POST['patTelNo']);
+    // Insert new patient record
     $conn->query("INSERT INTO patient (patFName, patLName, patBDate, patTelNo)
                   VALUES ('$patFName', '$patLName', '$patBDate', '$patTelNo')");
     header("Location: patients.php");
@@ -16,11 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
 
 // Handle Update Patient
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
+    // Get and sanitize form inputs for update
     $patID = intval($_POST['patID']);
     $patFName = $conn->real_escape_string($_POST['patFName']);
     $patLName = $conn->real_escape_string($_POST['patLName']);
     $patBDate = $conn->real_escape_string($_POST['patBDate']);
     $patTelNo = $conn->real_escape_string($_POST['patTelNo']);
+    // Update patient record
     $conn->query("UPDATE patient SET patFName='$patFName', patLName='$patLName', patBDate='$patBDate', patTelNo='$patTelNo' WHERE patID=$patID");
     header("Location: patients.php");
     exit;
@@ -28,20 +32,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
 // Handle Delete Patient
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    // Get patient ID to delete
     $delete_id = intval($_POST['delete_id']);
+    // Delete patient record
     $conn->query("DELETE FROM patient WHERE patID = $delete_id");
     header("Location: patients.php");
     exit;
 }
 
-// Search functionality
+// Search functionality for patients
 $search = '';
 $where = '';
 if (isset($_GET['search']) && $_GET['search'] !== '') {
     $search = $conn->real_escape_string($_GET['search']);
+    // Filter patients by first name, last name, or telephone number
     $where = "WHERE patFName LIKE '%$search%' OR patLName LIKE '%$search%' OR patTelNo LIKE '%$search%'";
 }
 
+// Query to get all patients (with optional search filter)
 $sql = "SELECT * FROM patient $where ORDER BY patFName";
 $result = $conn->query($sql);
 ?>
@@ -49,11 +57,11 @@ $result = $conn->query($sql);
 <html>
 <head>
     <title>Patients Management</title>
-   
 </head>
 <body>
 <div class="container">
     <h2>Patients Management</h2>
+    <!-- Navigation link back to menu -->
     <a href="index.php" class="btn btn-secondary mb-3">Back to Menu</a>
 
     <!-- Add Patient Form -->
@@ -76,7 +84,7 @@ $result = $conn->query($sql);
         <button type="submit" name="add" class="btn btn-primary">Add Patient</button>
     </form>
 
-    <!-- Search Form -->
+    <!-- Search Form for filtering patients -->
     <form method="get" class="mb-3">
         <div class="input-group">
             <input type="text" name="search" placeholder="Search by Name or Telephone" value="<?= htmlspecialchars($search) ?>">
@@ -85,6 +93,7 @@ $result = $conn->query($sql);
         </div>
     </form>
 
+    <!-- Table displaying patients -->
     <table>
         <thead>
             <tr>
@@ -100,6 +109,7 @@ $result = $conn->query($sql);
             <?php while($row = $result->fetch_assoc()): ?>
             <tr>
                 <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['patID']): ?>
+                    <!-- Edit mode: show editable fields for the selected patient -->
                     <form method="post">
                         <td><?= $row['patID'] ?><input type="hidden" name="patID" value="<?= $row['patID'] ?>"></td>
                         <td><input type="text" name="patFName" value="<?= htmlspecialchars($row['patFName']) ?>" required></td>
@@ -112,12 +122,14 @@ $result = $conn->query($sql);
                         </td>
                     </form>
                 <?php else: ?>
+                    <!-- Display mode: show patient details -->
                     <td><?= $row['patID'] ?></td>
                     <td><?= $row['patFName'] ?></td>
                     <td><?= $row['patLName'] ?></td>
                     <td><?= $row['patBDate'] ?></td>
                     <td><?= $row['patTelNo'] ?></td>
                     <td>
+                        <!-- Edit and Delete actions -->
                         <a href="patients.php?edit=<?= $row['patID'] ?>" class="btn btn-warning btn-sm">Edit</a>
                         <form method="post" style="display:inline;">
                             <input type="hidden" name="delete_id" value="<?= $row['patID'] ?>">

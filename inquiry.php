@@ -1,16 +1,21 @@
-
 <?php
 include 'db.php';
 
+// Initialize results array and get the type of inquiry from GET parameters
 $results = [];
 $type = $_GET['type'] ?? '';
 
+// If searching by specialization
 if ($type == 'specialization' && isset($_GET['special'])) {
     $special = $conn->real_escape_string($_GET['special']);
+    // Query doctors by specialization
     $sql = "SELECT * FROM doctor WHERE docSpecial LIKE '%$special%'";
     $results = $conn->query($sql);
-} elseif ($type == 'consult_by_doc' && isset($_GET['docID'])) {
+}
+// If searching consultations by doctor ID
+elseif ($type == 'consult_by_doc' && isset($_GET['docID'])) {
     $docID = intval($_GET['docID']);
+    // Query consultations for a specific doctor, joining with patient info
     $sql = "SELECT c.*, p.patFName, p.patLName FROM consultation c
             JOIN patient p ON c.patID = p.patID
             WHERE c.docID = $docID";
@@ -21,13 +26,14 @@ if ($type == 'specialization' && isset($_GET['special'])) {
 <html>
 <head>
     <title>Consultations Inquiry</title>
-   
 </head>
 <body>
 <div class="container">
     <h2>Consultations Inquiry</h2>
+    <!-- Navigation link back to menu -->
     <a href="index.php" class="btn btn-secondary mb-3">Back to Menu</a>
 
+    <!-- Form to search doctors by specialization -->
     <form method="get" class="mb-3">
         <input type="hidden" name="type" value="specialization">
         <div class="input-group">
@@ -36,6 +42,7 @@ if ($type == 'specialization' && isset($_GET['special'])) {
         </div>
     </form>
 
+    <!-- Form to search consultations by doctor ID -->
     <form method="get" class="mb-3">
         <input type="hidden" name="type" value="consult_by_doc">
         <div class="input-group">
@@ -44,6 +51,7 @@ if ($type == 'specialization' && isset($_GET['special'])) {
         </div>
     </form>
 
+    <!-- Display results for specialization search -->
     <?php if ($type == 'specialization'): ?>
         <h4>Doctors with Specialization: <?= htmlspecialchars($_GET['special']) ?></h4>
         <table>
@@ -68,6 +76,7 @@ if ($type == 'specialization' && isset($_GET['special'])) {
                 <?php endif; ?>
             </tbody>
         </table>
+    <!-- Display results for consultations by doctor -->
     <?php elseif ($type == 'consult_by_doc'): ?>
         <h4>Consultations for Doctor ID: <?= htmlspecialchars($_GET['docID']) ?></h4>
         <table>
